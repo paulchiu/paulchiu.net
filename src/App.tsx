@@ -1,11 +1,13 @@
-import './App.css'
-import Home from './app/page'
+import { Suspense, lazy } from 'react'
+import { ProfileSkeleton } from './components/skeleton'
+
+const Home = lazy(() => import('./app/page'))
 
 function App() {
   return (
-    <>
+    <Suspense fallback={<ProfileSkeleton />}>
       <Home />
-    </>
+    </Suspense>
   )
 }
 

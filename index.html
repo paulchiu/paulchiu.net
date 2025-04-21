@@ -20,6 +20,29 @@
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preload" href="/profile.webp" as="image" />
     <link rel="preload" href="/favicon.svg" as="image" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #282a36;
+        color: #f8f8f2;
+        height: 100%;
+      }
+      #root {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .initial-loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+        background-color: #282a36;
+      }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
@@ -40,10 +63,13 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://paulchiu.net" />
+    <meta name="theme-color" content="#282a36" />
     <title>Paul Chiu - Programmer | Brisbane, Australia</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="initial-loader"></div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

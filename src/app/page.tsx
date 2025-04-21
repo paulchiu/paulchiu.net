@@ -1,7 +1,6 @@
 import { Github, Linkedin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import reactLogo from '../assets/react.svg'
 
 export default function Home() {
   return (
@@ -11,7 +10,7 @@ export default function Home() {
           <div className="absolute -bottom-12 left-1/2 -translate-x-1/2">
             <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-[#1e1f29] bg-[#1e1f29]">
               <img
-                src={reactLogo}
+                src="/profile.png"
                 width={96}
                 height={96}
                 alt="Profile"

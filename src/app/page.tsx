@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     // Preload the profile image
     const img = new Image()
-    img.src = '/profile.png'
+    img.src = '/profile.webp'
     img.onload = () => setImageLoaded(true)
   }, [])
 

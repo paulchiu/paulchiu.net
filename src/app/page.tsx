@@ -21,7 +21,7 @@ export default function Home() {
             <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-[#1e1f29] bg-[#1e1f29]">
               {imageLoaded ? (
                 <img
-                  src="/profile.png"
+                  src="/profile.webp"
                   width={96}
                   height={96}
                   alt="Profile"

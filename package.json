@@ -8,11 +8,14 @@
   },
   "scripts": {
     "build": "tsc -b && vite build",
+    "ci": "npm run lint && npm run format && npm run typecheck",
     "dev": "vite",
-    "fmt": "prettier -w .",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.0",

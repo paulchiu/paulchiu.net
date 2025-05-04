@@ -1,42 +1,42 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "daily"
+      interval: 'daily'
     open-pull-requests-limit: 10
-    versioning-strategy: "auto"
+    versioning-strategy: 'auto'
     allow:
-      - dependency-type: "all"
+      - dependency-type: 'all'
     commit-message:
-      prefix: "chore"
-      include: "scope"
+      prefix: 'chore'
+      include: 'scope'
     labels:
-      - "dependencies"
-      - "automerge"
+      - 'dependencies'
+      - 'automerge'
     groups:
       dev-dependencies:
         patterns:
-          - "@types/*"
-          - "eslint*"
-          - "@vitejs/*"
-          - "prettier"
-          - "typescript*"
-          - "vite*"
+          - '@types/*'
+          - 'eslint*'
+          - '@vitejs/*'
+          - 'prettier'
+          - 'typescript*'
+          - 'vite*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
       runtime-dependencies:
         patterns:
-          - "@radix-ui/*"
-          - "@tailwindcss/*"
-          - "class-variance-authority"
-          - "clsx"
-          - "lucide-react"
-          - "react"
-          - "react-dom"
-          - "tailwind-merge"
-          - "tailwindcss"
+          - '@radix-ui/*'
+          - '@tailwindcss/*'
+          - 'class-variance-authority'
+          - 'clsx'
+          - 'lucide-react'
+          - 'react'
+          - 'react-dom'
+          - 'tailwind-merge'
+          - 'tailwindcss'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'

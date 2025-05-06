@@ -56,6 +56,7 @@ const config = {
         // Dracula theme colors
         dracula: {
           background: '#282a36',
+          darkBackground: '#1e1f29',
           currentLine: '#44475a',
           foreground: '#f8f8f2',
           comment: '#6272a4',

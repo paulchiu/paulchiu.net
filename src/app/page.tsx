@@ -28,18 +28,20 @@ export default function Home() {
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <div className="h-full w-full bg-[#44475a] animate-pulse"></div>
+                <div className="h-full w-full bg-card-background animate-pulse"></div>
               )}
             </div>
           </div>
         </div>
 
         <CardContent className="mt-16 p-6 text-center">
-          <h1 className="mb-1 text-2xl font-bold text-[#f8f8f2]">Paul Chiu</h1>
-          <p className="text-sm text-[#bd93f9]">Programmer</p>
+          <h1 className="mb-1 text-2xl font-bold text-primary-foreground">
+            Paul Chiu
+          </h1>
+          <p className="text-sm text-foreground">Programmer</p>
 
           <div className="my-6">
-            <p className="text-[#f8f8f2]">Brisbane, Australia</p>
+            <p className="text-primary-foreground">Brisbane, Australia</p>
           </div>
 
           <div className="flex justify-center space-x-4">
@@ -58,7 +60,7 @@ export default function Home() {
         </CardContent>
       </Card>
 
-      <footer className="mt-8 text-center text-sm text-[#6272a4]">
+      <footer className="mt-8 text-center text-sm text-accent">
         <p>© {new Date().getFullYear()} Paul Chiu. All rights reserved.</p>
       </footer>
     </div>

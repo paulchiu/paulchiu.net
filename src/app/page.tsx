@@ -1,5 +1,5 @@
 import { Github, Linkedin } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { SocialButton } from '@/components/social-button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useEffect, useState } from 'react'
 
@@ -43,35 +43,17 @@ export default function Home() {
           </div>
 
           <div className="flex justify-center space-x-4">
-            <Button
-              className="bg-[#44475a] text-[#f8f8f2] hover:bg-[#6272a4] border-none"
-              size="icon"
-              asChild
-            >
-              <a
-                href="https://github.com/paulchiu"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub Profile"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-            </Button>
+            <SocialButton
+              href="https://github.com/paulchiu"
+              icon={Github}
+              label="GitHub Profile"
+            />
 
-            <Button
-              className="bg-[#44475a] text-[#f8f8f2] hover:bg-[#6272a4] border-none"
-              size="icon"
-              asChild
-            >
-              <a
-                href="https://linkedin.com/in/paulchiu1"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn Profile"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
-            </Button>
+            <SocialButton
+              href="https://linkedin.com/in/paulchiu1"
+              icon={Linkedin}
+              label="LinkedIn Profile"
+            />
           </div>
         </CardContent>
       </Card>

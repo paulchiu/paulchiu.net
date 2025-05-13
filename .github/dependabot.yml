@@ -24,6 +24,7 @@ updates:
           - 'typescript*'
           - 'vite*'
         update-types:
+          - 'major'
           - 'minor'
           - 'patch'
       runtime-dependencies:
@@ -38,5 +39,6 @@ updates:
           - 'tailwind-merge'
           - 'tailwindcss'
         update-types:
+          - 'major'
           - 'minor'
           - 'patch'

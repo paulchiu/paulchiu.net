@@ -1,4 +1,4 @@
-import { Github, Linkedin } from 'lucide-react'
+import { GithubIcon, LinkedinIcon } from '@/components/social-icons'
 import { SocialButton } from '@/components/social-button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useEffect, useState } from 'react'
@@ -47,13 +47,13 @@ export default function Home() {
           <div className="flex justify-center space-x-4">
             <SocialButton
               href="https://github.com/paulchiu"
-              icon={Github}
+              icon={GithubIcon}
               label="GitHub Profile"
             />
 
             <SocialButton
               href="https://linkedin.com/in/paulchiu1"
-              icon={Linkedin}
+              icon={LinkedinIcon}
               label="LinkedIn Profile"
             />
           </div>

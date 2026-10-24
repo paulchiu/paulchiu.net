@@ -6,7 +6,7 @@ This my personal single page 'website'.
 
 ### Prerequisites
 
-- Node.js v22 (as specified in `.nvmrc` and `package.json`)
+- Node.js v24.22.1 (as specified in `.nvmrc` and `package.json`)
 - npm (comes with Node.js)
 
 ### Installation

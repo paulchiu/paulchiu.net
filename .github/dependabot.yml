@@ -14,6 +14,10 @@ updates:
     labels:
       - 'dependencies'
       - 'automerge'
+    ignore:
+      # TODO: Raise or drop once typescript-eslint's typescript peer range allows newer versions.
+      - dependency-name: 'typescript'
+        versions: ['>= 6.1.0']
     groups:
       dev-dependencies:
         patterns:

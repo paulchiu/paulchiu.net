@@ -15,9 +15,9 @@ updates:
       - 'dependencies'
       - 'automerge'
     ignore:
-      # typescript-eslint caps its typescript peer below 7; drop once it supports TypeScript 7.
+      # TODO: Raise or drop once typescript-eslint's typescript peer range allows newer versions.
       - dependency-name: 'typescript'
-        update-types: ['version-update:semver-major']
+        versions: ['>= 6.1.0']
     groups:
       dev-dependencies:
         patterns:

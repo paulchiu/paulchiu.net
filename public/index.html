@@ -36,11 +36,19 @@
     />
     <meta name="apple-mobile-web-app-title" content="paulchiu.net" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Comic+Neue:wght@400;700&family=Silkscreen:wght@400;700&family=VT323&display=swap"
+      rel="preload"
+      href="/fonts/anton-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/comic-neue-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
     <link rel="stylesheet" href="/style.css" />
     <script src="/site.js" defer></script>
@@ -79,6 +87,13 @@
           <a href="https://github.com/paulchiu/teamzones-tui">
             <img
               src="/img/shots/teamzones.webp"
+              srcset="
+                /img/shots/teamzones-360.webp 360w,
+                /img/shots/teamzones-640.webp 640w,
+                /img/shots/teamzones.webp     720w
+              "
+              sizes="(max-width: 640px) calc(100vw - 66px), 340px"
+              fetchpriority="high"
               width="720"
               height="430"
               alt="teamzones showing a team's working hours as lanes under a world map"
@@ -102,7 +117,14 @@
         <article class="feat">
           <a href="https://github.com/paulchiu/obsidian-choreday">
             <img
+              loading="lazy"
               src="/img/shots/choreday.webp"
+              srcset="
+                /img/shots/choreday-360.webp 360w,
+                /img/shots/choreday-640.webp 640w,
+                /img/shots/choreday.webp     720w
+              "
+              sizes="(max-width: 640px) calc(100vw - 66px), 340px"
               width="720"
               height="450"
               alt="Choreday's chore list with bars filling up as each chore comes due"
@@ -130,9 +152,11 @@
           class="b88"
           href="https://poemd.dev/"
           title="Poe Editor"
-          style="--c: #b0306a"
+          style="--c: #97295b"
         >
-          <span class="ico"><img src="/img/buttons/poe.webp" alt="" /></span>
+          <span class="ico"
+            ><img loading="lazy" src="/img/buttons/poe.webp" alt=""
+          /></span>
           <span class="lbl"><b>Poe</b>Editor</span>
         </a>
         <a
@@ -141,7 +165,9 @@
           title="FitKit"
           style="--c: #7a1fa2"
         >
-          <span class="ico"><img src="/img/buttons/fitkit.webp" alt="" /></span>
+          <span class="ico"
+            ><img loading="lazy" src="/img/buttons/fitkit.webp" alt=""
+          /></span>
           <span class="lbl"><b>Fit</b>Kit</span>
         </a>
         <a
@@ -150,17 +176,19 @@
           title="blubat"
           style="--c: #0050b0"
         >
-          <span class="ico"><img src="/img/buttons/blubat.webp" alt="" /></span>
+          <span class="ico"
+            ><img loading="lazy" src="/img/buttons/blubat.webp" alt=""
+          /></span>
           <span class="lbl"><b>blu</b>bat</span>
         </a>
         <a
           class="b88"
           href="https://lean-coffee-timer.paulchiu.net/"
           title="Lean Coffee Timer"
-          style="--c: #8a4a14"
+          style="--c: #824613"
         >
           <span class="ico"
-            ><img src="/img/buttons/leancoffee.webp" alt=""
+            ><img loading="lazy" src="/img/buttons/leancoffee.webp" alt=""
           /></span>
           <span class="lbl"><b>Lean</b>Coffee</span>
         </a>
@@ -168,7 +196,7 @@
           class="b88"
           href="https://github.com/paulchiu/repon"
           title="repon"
-          style="--c: #0a7a3a"
+          style="--c: #08632f"
         >
           <span class="ico glyph">&gt;_</span>
           <span class="lbl"><b>repon</b>git tui</span>
@@ -177,7 +205,7 @@
           class="b88"
           href="https://github.com/paulchiu/claude-session-titler"
           title="claude-session-titler"
-          style="--c: #c0501a"
+          style="--c: #8e3b13"
         >
           <span class="ico glyph">T</span>
           <span class="lbl"><b>Session</b>Titler</span>
@@ -186,7 +214,7 @@
           class="b88"
           href="https://github.com/paulchiu/saucer-vscode"
           title="saucer"
-          style="--c: #007a8a"
+          style="--c: #005e6a"
         >
           <span class="ico glyph">{}</span>
           <span class="lbl"><b>saucer</b>VS Code</span>
@@ -196,6 +224,7 @@
       <div class="buttons badges">
         <a href="https://www.vim.org/"
           ><img
+            loading="lazy"
             src="/img/88x31/vim.gif"
             width="88"
             height="31"
@@ -203,6 +232,7 @@
         /></a>
         <a href="https://www.firefox.com/"
           ><img
+            loading="lazy"
             src="/img/88x31/firefox.gif"
             width="88"
             height="31"
@@ -210,6 +240,7 @@
         /></a>
         <a href="https://www.apple.com/mac/"
           ><img
+            loading="lazy"
             src="/img/88x31/macintosh.gif"
             width="88"
             height="31"
@@ -217,6 +248,7 @@
         /></a>
         <a href="https://kernel.org/"
           ><img
+            loading="lazy"
             src="/img/88x31/linux.gif"
             width="88"
             height="31"

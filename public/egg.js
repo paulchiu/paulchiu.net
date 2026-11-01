@@ -1,5 +1,5 @@
 /**
- * SUPERHWY.EXE: the flight sim behind the π in the corner. Loaded on the
+ * RINGFLY.EXE: the flight sim behind the π in the corner. Loaded on the
  * first click via import(), so the homepage never pays for it.
  */
 
@@ -82,7 +82,7 @@ modal.setAttribute('aria-labelledby', 'egg-title')
 modal.innerHTML = `
   <div class="egg-win">
     <div class="egg-bar">
-      <span id="egg-title">SUPERHWY.EXE</span>
+      <span id="egg-title">RINGFLY.EXE</span>
       <span class="egg-btns">
         <button type="button" data-act="mute" aria-label="Mute">♪</button>
         <button type="button" data-act="close" aria-label="Close">×</button>
@@ -745,7 +745,7 @@ function wordart(str, y) {
 
 function drawTitle() {
   panel(40, 44, 240, 116)
-  wordart('SUPERHWY.EXE', 82)
+  wordart('RINGFLY.EXE', 82)
   text(`Fly through all ${RINGS} rings`, W / 2, 104, '#ffffff', 'center', 14)
   text('then into the counter tower', W / 2, 118, '#ffffff', 'center', 14)
   if (blink(2)) {
@@ -771,8 +771,8 @@ function drawBoot() {
   sctx.fillStyle = '#000'
   sctx.fillRect(0, 0, W, H)
   const lines = [
-    'C:\\PAULCHIU> superhwy.exe',
-    'SUPERHWY v0.98  (c) 1998 paulchiu.net',
+    'C:\\PAULCHIU> ringfly.exe',
+    'RINGFLY v0.98  (c) 1998 paulchiu.net',
     '',
     'Generating island ........ OK',
     'Paving superhighway ...... OK',

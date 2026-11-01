@@ -167,6 +167,16 @@ async function loadCounter() {
   } catch {}
 }
 
+/* ---------- Backdoor ---------- */
+
+/** Loads the flight sim on first use; Ctrl+Shift (or Cmd+Shift) unlocks the operator greeting. */
+document.getElementById('pi').addEventListener('click', async e => {
+  const operator = (e.ctrlKey || e.metaKey) && e.shiftKey
+  const button = e.currentTarget
+  const { openEgg } = await import('/egg.js')
+  openEgg(operator, button)
+})
+
 let resizeTimer
 addEventListener('resize', () => {
   clearTimeout(resizeTimer)

@@ -424,6 +424,8 @@ function respawn(i = nearestRoad(true)) {
 function setState(s) {
   state = s
   stateT = 0
+  if (s === 'title') startMusic()
+  musicMood()
 }
 
 const ringsLeft = () => rings.filter(r => !r.got).length
@@ -796,9 +798,37 @@ function drawBoot() {
 
 let ac = null
 let muted = false
+let master = null
+let musicBus = null
+let musicFilter = null
+let wobble = null
+let hiss = null
+
+/** One output for everything, so mute is a single gain; music runs through a lowpass that follows the game state. */
+function audioGraph() {
+  master = ac.createGain()
+  master.gain.value = muted ? 0 : 1
+  master.connect(ac.destination)
+  musicFilter = ac.createBiquadFilter()
+  musicFilter.type = 'lowpass'
+  musicFilter.frequency.value = 2000
+  musicBus = ac.createGain()
+  musicBus.gain.value = 0.6
+  musicBus.connect(musicFilter).connect(master)
+  const lfo = ac.createOscillator()
+  lfo.frequency.value = 0.35
+  wobble = ac.createGain()
+  wobble.gain.value = 12
+  lfo.connect(wobble)
+  lfo.start()
+  const len = ac.sampleRate * 0.5
+  hiss = ac.createBuffer(1, len, ac.sampleRate)
+  const d = hiss.getChannelData(0)
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1
+}
 
 function beep(freqs, dur) {
-  if (muted || !ac) return
+  if (!ac) return
   let t = ac.currentTime
   for (const f of freqs) {
     const o = ac.createOscillator()
@@ -807,7 +837,7 @@ function beep(freqs, dur) {
     o.frequency.value = f
     g.gain.setValueAtTime(0.04, t)
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur)
-    o.connect(g).connect(ac.destination)
+    o.connect(g).connect(master)
     o.start(t)
     o.stop(t + dur)
     t += dur
@@ -815,25 +845,23 @@ function beep(freqs, dur) {
 }
 
 function noise() {
-  if (muted || !ac) return
-  const len = ac.sampleRate * 0.5
-  const b = ac.createBuffer(1, len, ac.sampleRate)
-  const d = b.getChannelData(0)
-  for (let i = 0; i < len; i++) {
-    d[i] = (Math.random() * 2 - 1) * (1 - i / len) ** 2
-  }
+  if (!ac) return
   const src = ac.createBufferSource()
   const g = ac.createGain()
-  g.gain.value = 0.12
-  src.buffer = b
-  src.connect(g).connect(ac.destination)
+  g.gain.setValueAtTime(0.12, ac.currentTime)
+  g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.5)
+  src.buffer = hiss
+  src.connect(g).connect(master)
   src.start()
 }
 
 /** Browsers only allow audio after a gesture, so (re)try on each one. */
 function wakeAudio() {
   try {
-    ac = ac || new (window.AudioContext || window.webkitAudioContext)()
+    if (!ac) {
+      ac = new (window.AudioContext || window.webkitAudioContext)()
+      audioGraph()
+    }
     if (ac.state === 'suspended') ac.resume()
   } catch {}
 }
@@ -842,6 +870,243 @@ function toggleMute() {
   muted = !muted
   muteBtn.textContent = muted ? '×' : '♪'
   muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute')
+  master?.gain.setTargetAtTime(muted ? 0 : 1, ac.currentTime, 0.02)
+}
+
+/* ---------- Music ---------- */
+
+/**
+ * A woozy lounge loop in A minor: swung 16ths, organ stabs on 2 and 4, a
+ * gliding square lead with vibrato, and a slow detune wobble on every voice
+ * so the whole thing drifts like worn tape.
+ */
+const BPM = 92
+const STEP = 60 / BPM / 4
+const SWING = STEP * 0.33
+const BARS = 8
+const mtof = m => 440 * 2 ** ((m - 69) / 12)
+
+/** Am7, Fmaj7, Dm7, E7 */
+const CHORDS = [
+  [57, 60, 64, 67],
+  [53, 57, 60, 64],
+  [53, 57, 60, 62],
+  [52, 56, 59, 62],
+]
+const ROOTS = [33, 29, 38, 40]
+/** [step, semitones above root, length in steps] */
+const BASS = [
+  [0, 0, 5],
+  [6, 12, 2],
+  [10, 7, 2],
+  [14, 12, 2],
+]
+/** One bar per row: [step, MIDI note, length in steps] */
+const MELODY = [
+  [
+    [0, 76, 3],
+    [4, 74, 2],
+    [6, 72, 2],
+    [8, 69, 6],
+    [14, 72, 2],
+  ],
+  [
+    [0, 72, 3],
+    [4, 76, 2],
+    [6, 77, 2],
+    [8, 76, 4],
+    [12, 72, 4],
+  ],
+  [
+    [0, 74, 3],
+    [4, 72, 2],
+    [6, 69, 2],
+    [8, 65, 4],
+    [12, 69, 2],
+    [14, 72, 2],
+  ],
+  [
+    [0, 71, 6],
+    [6, 68, 2],
+    [8, 71, 2],
+    [10, 74, 2],
+    [12, 76, 4],
+  ],
+  [
+    [0, 81, 3],
+    [4, 79, 2],
+    [6, 76, 2],
+    [8, 72, 4],
+    [12, 76, 2],
+    [14, 79, 2],
+  ],
+  [
+    [0, 77, 6],
+    [6, 76, 2],
+    [8, 72, 4],
+    [12, 69, 4],
+  ],
+  [
+    [0, 74, 2],
+    [2, 77, 2],
+    [4, 81, 4],
+    [8, 79, 2],
+    [10, 77, 2],
+    [12, 74, 4],
+  ],
+  [
+    [0, 76, 4],
+    [4, 75, 2],
+    [6, 74, 2],
+    [8, 71, 4],
+    [12, 68, 2],
+    [14, 71, 2],
+  ],
+]
+
+let musicTimer = 0
+let nextStep = 0
+let nextTime = 0
+let lastLead = 0
+
+function voice(midi, t, dur, opts) {
+  const { type, gain, cutoff = 0, detune = 0, stab = false } = opts
+  const { vibrato = 0, glideFrom = 0, release = 0.08 } = opts
+  const o = ac.createOscillator()
+  const g = ac.createGain()
+  o.type = type
+  o.detune.value = detune
+  o.frequency.setValueAtTime(mtof(glideFrom || midi), t)
+  if (glideFrom) o.frequency.exponentialRampToValueAtTime(mtof(midi), t + 0.07)
+  wobble.connect(o.detune)
+  const nodes = [o]
+  if (vibrato) {
+    const v = ac.createOscillator()
+    const depth = ac.createGain()
+    v.frequency.value = 5.5
+    depth.gain.setValueAtTime(0, t)
+    depth.gain.linearRampToValueAtTime(vibrato, t + 0.3)
+    v.connect(depth).connect(o.detune)
+    v.start(t)
+    v.stop(t + dur + release)
+    nodes.push(v)
+  }
+  g.gain.setValueAtTime(0, t)
+  g.gain.linearRampToValueAtTime(gain, t + 0.008)
+  if (stab) g.gain.setTargetAtTime(gain * 0.3, t + 0.01, 0.1)
+  g.gain.setTargetAtTime(0, t + dur, release / 3)
+  let out = o
+  if (cutoff) {
+    out = ac.createBiquadFilter()
+    out.type = 'lowpass'
+    out.frequency.value = cutoff
+    o.connect(out)
+  }
+  out.connect(g).connect(musicBus)
+  o.start(t)
+  o.stop(t + dur + release * 2)
+  o.onended = () => wobble.disconnect(o.detune)
+}
+
+function drum(t, kind) {
+  if (kind === 'kick') {
+    const o = ac.createOscillator()
+    const g = ac.createGain()
+    o.frequency.setValueAtTime(110, t)
+    o.frequency.exponentialRampToValueAtTime(42, t + 0.12)
+    g.gain.setValueAtTime(0.22, t)
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.28)
+    o.connect(g).connect(musicBus)
+    o.start(t)
+    o.stop(t + 0.3)
+    return
+  }
+  const src = ac.createBufferSource()
+  const f = ac.createBiquadFilter()
+  const g = ac.createGain()
+  const hat = kind !== 'rim'
+  f.type = hat ? 'highpass' : 'bandpass'
+  f.frequency.value = hat ? 7000 : 1800
+  const level = kind === 'rim' ? 0.07 : kind === 'open' ? 0.022 : 0.012
+  g.gain.setValueAtTime(level, t)
+  g.gain.exponentialRampToValueAtTime(0.0001, t + (hat ? 0.05 : 0.09))
+  src.buffer = hiss
+  src.connect(f).connect(g).connect(musicBus)
+  src.start(t, Math.random() * 0.4, 0.1)
+}
+
+function playStep(step, t) {
+  const bar = step >> 4
+  const s = step & 15
+  const ch = bar % 4
+  if (s === 0) {
+    for (const n of CHORDS[ch]) {
+      voice(n, t, STEP * 15, { type: 'sawtooth', gain: 0.01, cutoff: 700 })
+    }
+  }
+  if (s === 4 || s === 12) {
+    for (const n of CHORDS[ch]) {
+      const stab = { type: 'square', gain: 0.016, cutoff: 1500, stab: true }
+      voice(n, t, STEP * 1.5, stab)
+      voice(n + 12, t, STEP * 1.5, { ...stab, gain: 0.006, detune: 9 })
+    }
+  }
+  for (const [bs, iv, len] of BASS) {
+    if (bs !== s) continue
+    const n = ROOTS[ch] + iv
+    voice(n, t, STEP * len * 0.85, { type: 'triangle', gain: 0.16 })
+    voice(n, t, STEP * len * 0.85, { type: 'square', gain: 0.02, cutoff: 420 })
+  }
+  for (const [ms, n, len] of MELODY[bar]) {
+    if (ms !== s) continue
+    const glideFrom = lastLead && Math.abs(n - lastLead) <= 5 ? lastLead : 0
+    voice(n, t, STEP * len * 0.9, {
+      type: 'square',
+      gain: 0.032,
+      cutoff: 2600,
+      vibrato: 18,
+      glideFrom,
+      release: 0.15,
+    })
+    lastLead = n
+  }
+  if (s === 0 || s === 8 || s === 11) drum(t, 'kick')
+  if (s === 4 || s === 12) drum(t, 'rim')
+  if (s % 2 === 0) drum(t, s % 4 === 2 ? 'open' : 'hat')
+}
+
+function scheduleMusic() {
+  /** After a throttled timer, skip ahead rather than fire the backlog at once. */
+  if (nextTime < ac.currentTime) nextTime = ac.currentTime + 0.05
+  while (nextTime < ac.currentTime + 0.15) {
+    playStep(nextStep, nextTime + (nextStep % 4 === 2 ? SWING : 0))
+    nextStep = (nextStep + 1) % (BARS * 16)
+    nextTime += STEP
+  }
+}
+
+function startMusic() {
+  if (!ac || musicTimer) return
+  nextStep = 0
+  lastLead = 0
+  nextTime = ac.currentTime + 0.1
+  musicTimer = setInterval(scheduleMusic, 25)
+  scheduleMusic()
+}
+
+function stopMusic() {
+  clearInterval(musicTimer)
+  musicTimer = 0
+}
+
+/** Muffled on the title, open in flight, underwater on a crash. */
+function musicMood() {
+  if (!musicFilter) return
+  const cutoff = { title: 1800, fly: 7000, crash: 380, win: 9000 }[state]
+  if (cutoff) {
+    const lag = state === 'crash' ? 0.03 : 0.5
+    musicFilter.frequency.setTargetAtTime(cutoff, ac.currentTime, lag)
+  }
 }
 
 /* ---------- Open, close and input ---------- */
@@ -861,6 +1126,7 @@ function frame(now) {
 function close() {
   modal.hidden = true
   cancelAnimationFrame(raf)
+  stopMusic()
   keys.clear()
   stick.on = false
   opener?.focus()
@@ -925,6 +1191,11 @@ addEventListener('keydown', e => {
   }
 })
 addEventListener('keyup', e => keys.delete(e.code))
+document.addEventListener('visibilitychange', () => {
+  if (!ac || modal.hidden) return
+  if (document.hidden) ac.suspend()
+  else ac.resume()
+})
 addEventListener('blur', () => keys.clear())
 
 function toCanvas(e) {

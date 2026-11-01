@@ -1,0 +1,6 @@
+CREATE TABLE hits (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  n INTEGER NOT NULL DEFAULT 0
+);
+
+INSERT INTO hits (id, n) VALUES (1, 0);

@@ -1,0 +1,369 @@
+:root {
+  --bg: #000010;
+  --text: #ffff66;
+  --link: #66ccff;
+  --visited: #cc99ff;
+  --hot: #ff3366;
+  --lime: #33ff33;
+  --panel: #000033;
+  --panel-edge: #8888ff;
+  --wordart-fill: #5fc9fb;
+  --wordart-edge: #1d3fae;
+  --button-face: #cecece;
+  --button-shade: #404040;
+  --button-sunk: #808080;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font:
+    17px/1.45 'Comic Neue',
+    'Comic Sans MS',
+    cursive;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(1px 1px at 12px 18px, #fff 99%, transparent),
+    radial-gradient(1px 1px at 70px 90px, #fff 99%, transparent),
+    radial-gradient(2px 2px at 140px 40px, #ffffaa 99%, transparent),
+    radial-gradient(1px 1px at 180px 150px, #aaccff 99%, transparent),
+    radial-gradient(1px 1px at 40px 170px, #fff 99%, transparent),
+    radial-gradient(1.5px 1.5px at 110px 130px, #ffccff 99%, transparent);
+  background-size: 200px 200px;
+}
+
+a {
+  color: var(--link);
+}
+
+a:visited {
+  color: var(--visited);
+}
+
+a:focus-visible {
+  outline: 2px dashed var(--lime);
+  outline-offset: 3px;
+}
+
+p {
+  margin: 0;
+}
+
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: 18px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 18px max(16px, env(safe-area-inset-right, 0px)) 40px
+    max(16px, env(safe-area-inset-left, 0px));
+  text-align: center;
+}
+
+.page > * {
+  min-width: 0;
+}
+
+.construction {
+  display: inline-flex;
+  padding: 5px 10px;
+  background: repeating-linear-gradient(-45deg, #ffd800 0 12px, #111 12px 24px);
+  border: 2px outset #999;
+}
+
+.construction span {
+  padding: 2px 8px;
+  color: #000;
+  background: #ffd800;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* WordArt "wave": each letter is stretched and nudged along a sine wave. */
+.wordart {
+  display: flex;
+  align-items: flex-end;
+  margin: 10px 0 4px;
+  color: var(--wordart-fill);
+  font:
+    400 clamp(3rem, 12vw, 6.6rem) / 1 Anton,
+    Impact,
+    'Arial Narrow Bold',
+    sans-serif;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  -webkit-text-stroke: 3px var(--wordart-edge);
+  paint-order: stroke fill;
+}
+
+.wordart span {
+  display: inline-block;
+  transform: translateY(var(--ty)) scaleY(var(--sy));
+  transform-origin: 50% 100%;
+  text-shadow:
+    1px 1px 0 var(--wordart-edge),
+    2px 2px 0 var(--wordart-edge),
+    3px 3px 0 var(--wordart-edge),
+    4px 4px 0 var(--wordart-edge),
+    5px 5px 0 var(--wordart-edge),
+    6px 6px 0 var(--wordart-edge);
+}
+
+.wordart .gap {
+  width: 0.28em;
+}
+
+marquee {
+  width: 100%;
+  max-width: 640px;
+  color: var(--lime);
+  font-weight: 700;
+}
+
+.intro {
+  max-width: 600px;
+}
+
+/* Section headings render as ANSI block art; the text stays for screen readers and no-JS. */
+.ansi {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 760px;
+  min-height: 48px;
+  margin: 8px 0 0;
+  color: #fff;
+  font:
+    400 1.4rem/48px VT323,
+    monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ansi.drawn {
+  font-size: 0;
+}
+
+.ansi canvas {
+  display: block;
+  image-rendering: pixelated;
+}
+
+.featured {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+  max-width: 760px;
+  text-align: left;
+}
+
+.feat {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+  padding: 14px;
+  background: var(--panel);
+  border: 3px ridge var(--panel-edge);
+}
+
+.feat img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: #111;
+  border: 4px ridge #c0c0c0;
+}
+
+.feat h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.feat .meta {
+  margin: 2px 0 8px;
+  color: #55ffff;
+  font:
+    1.05rem VT323,
+    'Courier New',
+    monospace;
+}
+
+.feat .go {
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: 700;
+}
+
+.new {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 5px;
+  color: #fff;
+  background: var(--hot);
+  font-size: 0.72rem;
+  vertical-align: 4px;
+  transform: rotate(-8deg);
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  max-width: 680px;
+}
+
+.buttons img {
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* 88x31 project buttons, styled after the classic grey bevelled badges. */
+.b88 {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 3px;
+  width: 88px;
+  height: 31px;
+  padding: 3px 3px 3px 4px;
+  background: var(--button-face);
+  box-shadow:
+    inset 2px 2px 0 #fff,
+    inset -2px -2px 0 var(--button-shade);
+  text-decoration: none;
+}
+
+.b88:hover {
+  filter: brightness(1.08);
+}
+
+.b88:active {
+  box-shadow:
+    inset 2px 2px 0 var(--button-shade),
+    inset -2px -2px 0 #fff;
+}
+
+.b88 .ico {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 23px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid;
+  border-color: var(--button-sunk) #fff #fff var(--button-sunk);
+}
+
+.b88 .ico img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: auto;
+}
+
+.b88 .glyph {
+  color: #fff;
+  background: var(--c);
+  font:
+    16px/1 VT323,
+    monospace;
+}
+
+.b88 .lbl {
+  display: grid;
+  min-width: 0;
+  color: var(--button-shade);
+  font:
+    8px/1.1 Silkscreen,
+    'Courier New',
+    monospace;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.b88 .lbl b {
+  color: var(--c);
+  font-weight: 700;
+}
+
+.counter-wrap {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+
+.counter {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  background: #222;
+  border: 2px inset #666;
+}
+
+.counter b {
+  min-width: 1.1em;
+  padding: 2px 6px;
+  color: var(--lime);
+  background: #000;
+  font:
+    400 1.6rem/1 VT323,
+    'Courier New',
+    monospace;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 6px var(--lime);
+}
+
+.counter.loading b {
+  color: #1a6b1a;
+  text-shadow: none;
+}
+
+footer {
+  display: grid;
+  gap: 4px;
+}
+
+footer small {
+  color: #bbb;
+}
+
+@media (max-width: 640px) {
+  .feat {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .new {
+    animation: none;
+  }
+
+  marquee {
+    display: none;
+  }
+}

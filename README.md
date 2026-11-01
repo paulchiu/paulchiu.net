@@ -1,40 +1,37 @@
 # paulchiu.net
 
-This my personal single page 'website'.
+My personal homepage, built like it's 1998: plain HTML, CSS and a little
+JavaScript. No framework and no bundler.
 
-## Getting Started
+## Layout
 
-### Prerequisites
+- `public/`: the site itself (`index.html`, `style.css`, `site.js`, images)
+- `functions/hit.js`: the visitor counter, a Cloudflare Pages Function
+- `migrations/`: the D1 schema for the counter
+- `wrangler.toml`: Pages config and the D1 binding
 
-- Node.js v24.22.1 (as specified in `.nvmrc` and `package.json`)
-- npm (comes with Node.js)
+## Deploys
 
-### Installation
+Cloudflare Pages is connected to this repo. Every push to `main` runs
+`npm run build` (which copies `public/` to `dist/`) and deploys `dist/` along
+with `functions/`.
 
-1. Clone the repository:
+## Local development
 
-   ```bash
-   git clone https://github.com/paulchiu/paulchiu.net.git
-   cd paulchiu.net
-   ```
+Requires Node.js (see `.nvmrc`).
 
-2. Install dependencies:
+```bash
+npm i
+npm run db:migrate:local   # first time only
+npm run dev                # http://localhost:8788
+```
 
-   ```bash
-   npm i
-   ```
+`npm run ci` checks formatting; `npm run format:fix` fixes it.
 
-3. Start the development server:
+## Visitor counter
 
-   ```bash
-   npm run dev
-   ```
-
-4. Open your browser and navigate to `http://localhost:5173` to see the page.
-
-## Built with
-
-- [React](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [ShadCN UI](https://ui.shadcn.com/)
+`POST /hit` counts a visit and returns the new total; `GET /hit` returns the
+total. The page posts once per browser session. The count lives in the
+`paulchiu-net-counter` D1 database and was seeded with the Web Analytics
+visit total from May to October 2026. Schema changes go in `migrations/` and
+are applied with `npm run db:migrate`.

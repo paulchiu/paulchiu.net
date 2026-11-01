@@ -1,0 +1,10 @@
+# Cloudflare Pages config. Pages builds with `npm run build` and serves dist/,
+# compiling functions/ automatically; this file supplies the D1 binding.
+name = "paulchiu-net"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "paulchiu-net-counter"
+database_id = "6fc2272a-a6cb-490c-9468-c5e73993f047"

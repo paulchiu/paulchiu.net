@@ -89,7 +89,7 @@ modal.innerHTML = `
       </span>
     </div>
     <canvas width="${W}" height="${H}" tabindex="0" aria-label="Flight simulator"></canvas>
-    <div class="egg-status">Arrows or WASD (or drag) to fly · Space boost · M mute · Esc exit</div>
+    <div class="egg-status">Arrows or WASD (or drag) to fly / Space boost / M mute / Esc exit</div>
   </div>`
 document.body.append(modal)
 

@@ -39,7 +39,7 @@ are applied with `npm run db:migrate`.
 
 ## Easter egg
 
-The faint π in the bottom-right corner opens SUPERHWY.EXE, a small voxel
+The faint π in the bottom-right corner opens RINGFLY.EXE, a small voxel
 flight sim: fly through nine rings, then into the visitor counter tower.
 Ctrl+Shift+click (Cmd+Shift on a Mac) unlocks an operator greeting on the boot
 screen. `egg.js` is only fetched when someone clicks.

@@ -19,10 +19,10 @@ jobs:
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
 
-      - name: Enable auto-merge for minor and patch updates
-        if: ${{ steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch' }}
+      - name: Enable auto-merge for actions updates and npm minor/patch updates
+        if: ${{ steps.metadata.outputs.package-ecosystem == 'github_actions' || steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch' }}
         run: |
-          gh pr merge --auto --squash "$PR_URL" --body "Auto-merged minor/patch dependency update"
+          gh pr merge --auto --squash "$PR_URL" --body "Auto-merged dependency update"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
